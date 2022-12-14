@@ -7,13 +7,25 @@
 var app = require('../app');
 var debug = require('debug')('insta-clone:server');
 var http = require('http');
+const mongoose = require('mongoose')
+require('dotenv').config()
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '5002');
 app.set('port', port);
+
+// mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateIndex: true } )
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true  } )
+const db = mongoose.connection 
+db.on('error',(error)=>console.error(error))
+db.once('open',()=>console.error('connected to database'))
+
+// Request.requestModel.collection.dropIndexes(function (err, results) {
+//   // Handle errors
+// });
 
 /**
  * Create HTTP server.
